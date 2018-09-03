@@ -5,7 +5,7 @@ const MongoClient = require('mongodb').MongoClient
 
 var db
 
-MongoClient.connect('mongodb://home:yoann-home-23@ds125368.mlab.com:25368/star-wars-quotes', {
+MongoClient.connect('mongodb://<dbuser>:<dbpassword>@ds125368.mlab.com:25368/star-wars-quotes', {
   useNewUrlParser: true
 }, (err, database) => {
   if (err) return console.log(err)
