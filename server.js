@@ -41,19 +41,27 @@ app.post('/quotes', (req, res) => {
 
 app.put('/quotes', (req, res) => {
   db.collection('quotes').findOneAndUpdate({
-    name: 'Yoda'
+    name: "Yoda"
   }, {
-    $set: {
-      name: req.body.name,
-      quote: req.body.quote
-    }
-  }, {
-    sort: {
-      _id: -1
-    },
-    upsert: true
-  }, (err, result) => {
-    if (err) return res.send(err)
-    res.send(result)
-  })
+      $set: {
+        name: req.body.name,
+        quote: req.body.quote
+      }
+    }, {
+      sort: { _id: -1 },
+      upsert: true
+    }, (err, result) => {
+      if (err) return res.send(err)
+      res.send(result)
+    })
+})
+
+app.delete('/quotes', (req, res) => {
+  db.collection('quotes').findOneAndDelete({
+    name: req.body.name
+  },
+    (err, result) => {
+      if (err) return res.send(500, err)
+      res.send({ message: 'A darth vadar quote got deleted' })
+    })
 })
