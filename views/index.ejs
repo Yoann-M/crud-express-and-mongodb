@@ -1,40 +1,87 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF-8">
   <title>MY APP</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- UIkit CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.12/css/uikit.min.css" />
+
 </head>
+
 <body>
-  <h1>May Node and Express be with you.</h1>
+  <div class="uk-container">
+    <h1>May Node and Express be with you.</h1>
+    <table class="uk-table uk-table-divider">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Quotes</th>
+          <th>ID</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(var i=0; i<quotes.length; i++) {%>
+          <tr>
+            <td><%= quotes[i].name %></td>
+            <td><%= quotes[i].quote %></td>
+            <td><%= quotes[i]._id %></td>
+            <td>
+              <button id="delete" class="uk-button uk-button-danger" data-id="<%= quotes[i]._id %>"> Supprimer </button>
+              <button id="update" class="uk-button uk-button-primary">Modifier</button>
+              <button class="uk-button uk-button-default" type="button" uk-toggle="target: #modal-example">Open</button>
+            </td>
+          </tr>
+          <% } %>
+      </tbody>
+    </table>
+    <h2>Add a quote</h2>
 
-  <ul class="quotes">
-  <% for(var i=0; i<quotes.length; i++) {%>
-    <li class="quote">
-      <span><%= quotes[i].name %></span>
-      <span><%= quotes[i].quote %></span>
-      <span><%= quotes[i]._id %></span>
-    </li>
-  <% } %>
-  </ul>
+    <form action="/quotes" method="POST" class="uk-grid uk-grid-small">
+      <div class="uk-width-1-3"><input class="uk-input" type="text" placeholder="name" name="name"></div>
+      <div class="uk-width-1-3"><input class="uk-input" type="text" placeholder="quote" name="quote"></div>
+      <div class="uk-width-1-3"><button type="submit" class="uk-button uk-button-default">Submit</button></div>
+    </form>
 
-  <h2>Add a quote</h2>
+    <div>
+      <h2>Replace last quote written by Master Yoda with a quote written by Darth Vadar</h2>
+      <button id="update"> Darth Vadar invades! </button>
+    </div>
 
-  <form action="/quotes" method="POST">
-    <input type="text" placeholder="name" name="name">
-    <input type="text" placeholder="quote" name="quote">
-    <button type="submit">Submit</button>
-  </form>
+    <!-- This is a button toggling the modal -->
+    <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #modal-example">Open</button>
+    <!-- This is the modal -->
+    <div id="modal-example" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Headline</h2>
+            <form class="uk-form-stacked">
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="form-stacked-text">Name</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" id="form-stacked-text" type="name" placeholder="Some text...">
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="form-stacked-text">Quotes</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" id="form-stacked-text" type="quotes" placeholder="Some text...">
+                    </div>
+                </div>
+                <div class="uk-text-right">
+                    <button class="uk-button uk-button-danger uk-modal-close" type="button">Annuler</button>
+                    <button class="uk-button uk-button-primary" type="submit">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-  <div>
-    <h2>Replace last quote written by Master Yoda with a quote written by Darth Vadar</h2>
-    <button id="update"> Darth Vadar invades! </button>
   </div>
-
-  <div>
-    <h2>Delete Darth Vadar's first quote</h2>
-    <button id="delete"> Delete first Darth Vadar quote </button>
-  </div>
-
+  <!-- UIkit JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.12/js/uikit.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.12/js/uikit-icons.min.js"></script>
   <script src="main.js"></script>
 </body>
+
 </html>

@@ -1,11 +1,13 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
+const mongodb = require('mongodb')
 const MongoClient = require('mongodb').MongoClient
 
 var db
+var linkToDb = 'mongodb://<dbuser>:<dbpassword>@ds125368.mlab.com:25368/star-wars-quotes';
 
-MongoClient.connect('mongodb://<dbuser>:<dbpassword>@ds125368.mlab.com:25368/star-wars-quotes', {
+MongoClient.connect(linkToDb, {
   useNewUrlParser: true
 }, (err, database) => {
   if (err) return console.log(err)
@@ -24,7 +26,7 @@ app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
   db.collection('quotes').find().toArray(function (err, results) {
-    console.log(results)
+    //console.log(results)
     res.render('index.ejs', {
       quotes: results
     })
@@ -57,8 +59,8 @@ app.put('/quotes', (req, res) => {
 })
 
 app.delete('/quotes', (req, res) => {
-  db.collection('quotes').findOneAndDelete({
-    name: req.body.name
+  db.collection('quotes').deleteOne({
+    _id: new mongodb.ObjectId(req.body._id)
   },
     (err, result) => {
       if (err) return res.send(500, err)
