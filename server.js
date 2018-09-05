@@ -5,13 +5,13 @@ const mongodb = require('mongodb')
 const MongoClient = require('mongodb').MongoClient
 
 var db
-var linkToDb = 'mongodb://<dbuser>:<dbpassword>@ds125368.mlab.com:25368/star-wars-quotes';
+var linkToDb = 'path-to-mongo-db';
 
 MongoClient.connect(linkToDb, {
   useNewUrlParser: true
 }, (err, database) => {
   if (err) return console.log(err)
-  db = database.db('star-wars-quotes') // whatever your database name is
+  db = database.db('star-wars-quotes')
   app.listen(3000, () => {
     console.log('listening on 3000')
   })
@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/quotes', (req, res) => {
-  db.collection('quotes').save(req.body, (err, result) => {
+  db.collection('quotes').insertOne(req.body, (err, result) => {
     if (err) return console.log(err)
     console.log('saved to database')
     res.redirect('/')
@@ -42,8 +42,8 @@ app.post('/quotes', (req, res) => {
 })
 
 app.put('/quotes', (req, res) => {
-  db.collection('quotes').findOneAndUpdate({
-    name: "Yoda"
+  db.collection('quotes').updateOne({
+    _id: new mongodb.ObjectId(req.body._id)
   }, {
       $set: {
         name: req.body.name,
@@ -51,7 +51,6 @@ app.put('/quotes', (req, res) => {
       }
     }, {
       sort: { _id: -1 },
-      upsert: true
     }, (err, result) => {
       if (err) return res.send(err)
       res.send(result)
